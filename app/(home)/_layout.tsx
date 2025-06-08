@@ -1,11 +1,12 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from '@ant-design/react-native';
-import ClothesScreen from './clothes';
-import FavoritesScreen from './favorites';
-import ChatScreen from './chat';
-import CalendarScreen from './calendar';
-import ProfileScreen from './profile';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Icon } from "@ant-design/react-native";
+import ClothesScreen from "./clothes";
+import FavoritesScreen from "./favorites";
+import ChatScreen from "./chat";
+import CalendarScreen from "./calendar";
+import ProfileScreen from "./profile";
+import { Platform, Pressable } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,30 +16,45 @@ export default function BottomTabNavigator() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
           switch (route.name) {
-            case 'clothes':
+            case "clothes":
               return <Icon name="skin" size={30} color={color} />;
-            case 'favorites':
+            case "favorites":
               return <Icon name="heart" size={30} color={color} />;
-            case 'calendar':
+            case "calendar":
               return <Icon name="calendar" size={30} color={color} />;
-            case 'chat':
+            case "chat":
               return <Icon name="environment" size={30} color={color} />;
-            case 'profile':
+            case "profile":
               return <Icon name="user" size={30} color={color} />;
             default:
               return <Icon name="appstore" size={30} color={color} />;
           }
         },
         tabBarLabel: () => null,
-        tabBarActiveTintColor: '#5199a3',
-        tabBarInactiveTintColor: '#9ec2c8',
+        tabBarActiveTintColor: "#5199a3",
+        tabBarInactiveTintColor: "#9ec2c8",
         tabBarStyle: {
-          backgroundColor: 'white',
+          backgroundColor: "white",
           height: 85,
           paddingTop: 10,
           paddingHorizontal: 20,
         },
         headerShown: false,
+        ...(Platform.OS === "android" && {
+          tabBarButton: ({ children, onPress }) => (
+            <Pressable
+              android_ripple={{ color: "transparent" }}
+              onPress={onPress}
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {children}
+            </Pressable>
+          ),
+        }),
       })}
     >
       <Tab.Screen name="clothes" component={ClothesScreen} />
