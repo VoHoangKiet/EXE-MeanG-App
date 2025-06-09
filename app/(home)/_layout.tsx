@@ -1,12 +1,12 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "@ant-design/react-native";
-import ClothesScreen from "./clothes";
 import FavoritesScreen from "./favorites";
 import ChatScreen from "./chat";
 import CalendarScreen from "./calendar";
-import ProfileScreen from "./profile";
+import ProfileScreen from "./(setting)";
 import { Platform, Pressable } from "react-native";
+import ClothesScreen from ".";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +16,7 @@ export default function BottomTabNavigator() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
           switch (route.name) {
-            case "clothes":
+            case "index":
               return <Icon name="skin" size={30} color={color} />;
             case "favorites":
               return <Icon name="heart" size={30} color={color} />;
@@ -24,7 +24,7 @@ export default function BottomTabNavigator() {
               return <Icon name="calendar" size={30} color={color} />;
             case "chat":
               return <Icon name="environment" size={30} color={color} />;
-            case "profile":
+            case "setting":
               return <Icon name="user" size={30} color={color} />;
             default:
               return <Icon name="appstore" size={30} color={color} />;
@@ -57,11 +57,11 @@ export default function BottomTabNavigator() {
         }),
       })}
     >
-      <Tab.Screen name="clothes" component={ClothesScreen} />
+      <Tab.Screen name="index" component={ClothesScreen} />
       <Tab.Screen name="favorites" component={FavoritesScreen} />
       <Tab.Screen name="calendar" component={CalendarScreen} />
       <Tab.Screen name="chat" component={ChatScreen} />
-      <Tab.Screen name="profile" component={ProfileScreen} />
+      <Tab.Screen name="setting" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }

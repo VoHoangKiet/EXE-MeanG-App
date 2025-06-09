@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "meanG",
+    "scheme": "meang",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.meanG.app",
+      "bundleIdentifier": "com.meang.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.meanG.app"
+      "package": "com.meang.app"
     },
     "web": {
       "bundler": "metro",
