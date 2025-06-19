@@ -3,6 +3,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import {  useEffect, useState } from "react";
 import "react-native-reanimated";
+import "react-native-gesture-handler";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -21,7 +22,15 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 function RootLayoutNav() {
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        refetchOnWindowFocus: false,
+      },
+    },
+  }));
+
   return (
     <QueryClientProvider client={queryClient}>
       <AntdProvider>

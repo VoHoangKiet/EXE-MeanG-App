@@ -28,7 +28,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.meang.app"
+      "package": "com.meang.app",
+      "permissions": [],
+      "allowBackup": true,
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "bundler": "metro",
@@ -42,7 +45,9 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
+      "router": {
+        "origin": false
+      },
       "eas": {
         "projectId": "c03d2bea-7c43-4646-a060-76c6813dec0e"
       }

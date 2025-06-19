@@ -12,11 +12,13 @@ import Spin from "@/components/common/Spin";
 import BoxItem from "@/components/clothes/BoxItem";
 import VerticalActionButtons from "@/components/clothes/button/ButtonAction";
 import BottomSection from "@/components/clothes/bottomSection";
+import { useItems } from "@/hooks/item/useItems";
 
 export default function ClothesScreen() {
   const { data: profile, isLoading } = useProfile();
-  if (isLoading) return <Spin />;
-
+  const { data: items, isLoading: isLoadingItems } = useItems();
+  if (isLoading || isLoadingItems) return <Spin />;
+  console.log(items);
   return (
     <ImageBackground
       source={require("../../assets/images/bg.png")}
