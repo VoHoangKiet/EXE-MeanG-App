@@ -18,7 +18,6 @@ export default function ClothesScreen() {
   const { data: profile, isLoading } = useProfile();
   const { data: items, isLoading: isLoadingItems } = useItems();
   if (isLoading || isLoadingItems) return <Spin />;
-  console.log(items);
   return (
     <ImageBackground
       source={require("../../assets/images/bg.png")}

@@ -8,7 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "API_URL": "http://192.168.1.19:4000"
+        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn"
       }
     },
     "preview": {
@@ -19,7 +19,7 @@
         "withoutCredentials": true
       },
       "env": {
-        "API_URL": "http://192.168.1.19:4000"
+        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn"
       }
     },
     "production": {
@@ -28,7 +28,7 @@
         "buildType": "apk"
       },
       "env": {
-        "API_URL": "http://192.168.1.19:4000"
+        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn"
       }
     }
   },

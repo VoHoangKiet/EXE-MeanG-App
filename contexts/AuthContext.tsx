@@ -21,7 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const token = await AsyncStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
     if (token) {
-      router.replace("/(home)/clothes");
+      router.replace("/(home)");
     }
   };
 
@@ -31,7 +31,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateLoginState = async (token: string | null) => {
     if (token) {
-      console.log("token", token);
       await AsyncStorage.setItem("accessToken", token);
       await checkIsLoggedIn();
     }

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { getAccessToken } from '../storage/auth.storage';
-import { API_URL } from '@env';
+import { EXPO_PUBLIC_API_URL } from '@env';
 
 const api = axios.create({
-  baseURL: `${API_URL}/api/v1`,
+  baseURL: EXPO_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
