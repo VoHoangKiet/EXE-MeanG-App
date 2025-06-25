@@ -7,7 +7,13 @@ import { Item } from "@/types/item.type";
 
 const CATEGORIES = ['shirt', 'pants', 'shoes'] as const;
 
-export default function BottomSection() {
+type Props = {
+  selectedItems: Record<string, Item | null>;
+  setSelectedItems: React.Dispatch<React.SetStateAction<Record<string, Item | null>>>;
+  onPickItem?: (item: Item) => void;
+};
+
+export default function BottomSection({ selectedItems, setSelectedItems, onPickItem }: Props) {
   const { data: items, isLoading } = useItems();
 
   if (isLoading) {
@@ -21,6 +27,28 @@ export default function BottomSection() {
     acc[item.category_enum].push(item);
     return acc;
   }, {} as Record<string, Item[]>);
+
+  const pickItem = (item: Item) => {
+    const category = item.category_enum;
+    const currentSelected = selectedItems[category];
+    const isSelected = currentSelected?._id === item._id;
+    if (isSelected) {
+      setSelectedItems(prev => ({
+        ...prev,
+        [category]: null
+      }));
+    } else {
+      setSelectedItems(prev => ({
+        ...prev,
+        [category]: item
+      }));
+    }
+  }
+
+  const isItemSelected = (item: Item) => {
+    const category = item.category_enum;
+    return selectedItems[category]?._id === item._id;
+  }
 
   return (
     <View style={styles.container}>
@@ -36,6 +64,8 @@ export default function BottomSection() {
               <SquareItem 
                 key={item._id}
                 itemUrl={item.imageLink}
+                onPress={() => (onPickItem ? onPickItem(item) : pickItem(item))}
+                isSelected={isItemSelected(item)}
               />
             ))}
           </View>
@@ -60,6 +90,6 @@ const styles = StyleSheet.create({
   },
   column: {
     width: 100,
-    gap: 10,
+    gap: 15,
   },
 });

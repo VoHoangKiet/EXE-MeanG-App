@@ -1,7 +1,14 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
+import { Item } from "@/types/item.type";
 
-export default function Box() {
-  return <View style={styles.box} />;
+type Props = {
+  item: Item | null;
+};
+
+export default function BoxItem({ item }: Props) {
+  return <View style={styles.box}>
+    <Image source={{ uri: item?.imageLink }} style={styles.image} />
+  </View>;
 }
 
 const styles = StyleSheet.create({
@@ -16,5 +23,10 @@ const styles = StyleSheet.create({
     elevation: 8,
     borderWidth: 1,
     borderColor: "#E0E0FF",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 2,
   },
 });

@@ -3,30 +3,35 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
-const actions = [
-  {
-    icon: <MaterialIcons name="add-box" size={17} color="#5199a3" />,
-    onPress: () => {},
-  },
-  {
-    icon: <Feather name="download" size={17} color="#5199a3" />,
-    onPress: () => {},
-  },
-  {
-    icon: <AntDesign name="hearto" size={17} color="#5199a3" />,
-    onPress: () => {},
-  },
-  {
-    icon: <Feather name="rotate-ccw" size={17} color="#5199a3" />,
-    onPress: () => {},
-  },
-  {
-    icon: <AntDesign name="close" size={17} color="#5199a3" />,
-    onPress: () => {},
-  },
-];
+interface Props {
+  onBack?: () => void;
+  onClear?: () => void;
+  onSubmit?: () => void;
+}
 
-const VerticalActionButtons = () => {
+const VerticalActionButtons = ({ onBack, onClear, onSubmit }: Props) => {
+  const actions = [
+    {
+      icon: <MaterialIcons name="add-box" size={17} color="#5199a3" />,
+      onPress: onSubmit,
+    },
+    {
+      icon: <Feather name="download" size={17} color="#5199a3" />,
+      onPress: () => {},
+    },
+    {
+      icon: <AntDesign name="hearto" size={17} color="#5199a3" />,
+      onPress: () => {},
+    },
+    {
+      icon: <Feather name="rotate-ccw" size={17} color="#5199a3" />,
+      onPress: onBack,
+    },
+    {
+      icon: <AntDesign name="close" size={17} color="#5199a3" />,
+      onPress: onClear,
+    },
+  ];
   return (
     <View style={styles.container}>
       {actions.map((action, index) => (
