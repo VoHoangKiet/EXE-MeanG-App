@@ -8,7 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn"
+        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn/api/v1"
       }
     },
     "preview": {
@@ -19,7 +19,7 @@
         "withoutCredentials": true
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn"
+        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn/api/v1"
       }
     },
     "production": {
@@ -28,7 +28,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn"
+        "EXPO_PUBLIC_API_URL": "https://api.meang.io.vn/api/v1"
       }
     }
   },

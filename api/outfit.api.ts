@@ -8,3 +8,8 @@ export const createOutfit = async (
   const response = await api.post("/outfit/generate", { items: itemsIds });
   return response.data;
 };
+
+export const getOutfits = async (): Promise<ApiResponse<Outfit[]>> => {
+  const response = await api.get("/outfit");
+  return response.data;
+};

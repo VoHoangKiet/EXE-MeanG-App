@@ -6,13 +6,14 @@ import { ApiResponse } from "@/types/dto/response/response.api";
 
 export const useCreateOutfit = () => {
   return useMutation({
-    mutationFn: (items: string[]): Promise<ApiResponse<Outfit>> => createOutfit(items),
+    mutationFn: (items: string[]): Promise<ApiResponse<Outfit>> =>
+      createOutfit(items),
     onSuccess: () => {
-      toast.success("Outfit created successfully");
+      toast.success("Tạo outfit thành công");
     },
     onError: (error) => {
       console.log(error);
-      toast.fail("Failed to create outfit");
+      toast.fail("Tạo outfit thất bại");
     },
   });
 };

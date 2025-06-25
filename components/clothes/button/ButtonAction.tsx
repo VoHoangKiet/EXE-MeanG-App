@@ -12,7 +12,7 @@ interface Props {
 const VerticalActionButtons = ({ onBack, onClear, onSubmit }: Props) => {
   const actions = [
     {
-      icon: <MaterialIcons name="add-box" size={17} color="#5199a3" />,
+      icon: <Feather name="zap" size={17} color="#5199a3" />,
       onPress: onSubmit,
     },
     {
