@@ -69,8 +69,6 @@ export default function ClothesScreen() {
   };
 
   const handleConfirm = () => {
-    // Thực hiện submit thực sự ở đây
-    // select ra cac id cua tung item
     const items = Object.values(selectedItems).filter((item) => item !== null);
     const itemIds = items.map((item) => item._id);
     createOutfit(itemIds, {
