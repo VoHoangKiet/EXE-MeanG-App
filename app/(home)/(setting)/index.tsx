@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import SectionSetting from "@/components/setting/SectionSetting";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
@@ -6,7 +6,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 export default function SettingsScreen() {
   const { logout } = useContext(AuthContext);
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Cài đặt</Text>
       </View>
@@ -45,7 +45,7 @@ export default function SettingsScreen() {
           { icon: "logout", label: "Đăng xuất", onPress: logout },
         ]}
       />
-    </View>
+    </ScrollView>
   );
 }
 

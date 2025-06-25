@@ -5,8 +5,6 @@ import { Outfit } from "@/types/outfit.type";
 import SquareOutfit from "./SquareOutfit";
 import { useState } from "react";
 
-const CATEGORIES = ["shirt", "pants", "shoes"] as const;
-
 type Props = {
   selectedOutfit: Outfit | null;
   setSelectedOutfit: React.Dispatch<React.SetStateAction<Outfit | null>>;
@@ -77,7 +75,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     alignItems: "flex-start",
     justifyContent: "center",
-    gap: 20,
     paddingVertical: 10,
   },
   grid: {
@@ -87,7 +84,6 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   squareWrapper: {
-    width: 120,
     alignItems: "center",
   },
 });
