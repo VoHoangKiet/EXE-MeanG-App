@@ -2,13 +2,15 @@ import React from "react";
 import { TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { ActivityIndicator } from "@ant-design/react-native";
 
 interface Props {
   onPress?: () => void;
   style?: ViewStyle;
+  loading?: boolean;
 }
 
-const SquareAddButton = ({ onPress, style }: Props) => {
+const SquareAddButton = ({ onPress, style, loading }: Props) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.shadow, style]}>
       <LinearGradient
@@ -17,7 +19,11 @@ const SquareAddButton = ({ onPress, style }: Props) => {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
+        {loading ? (
+          <ActivityIndicator size="large" color="#5199a3" />
+        ) : (
           <AntDesign name="plus" size={50} color="#5199a3" />
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );

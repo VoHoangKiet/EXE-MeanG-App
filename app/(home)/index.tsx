@@ -86,9 +86,6 @@ export default function ClothesScreen() {
     setShowConfirmModal(false);
   };
 
-  const allSelected =
-    selectedItems.shirt && selectedItems.pants && selectedItems.shoes;
-
   if (isLoading) return <Spin />;
   return (
     <ImageBackground

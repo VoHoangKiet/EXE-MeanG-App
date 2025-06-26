@@ -2,9 +2,14 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import SectionSetting from "@/components/setting/SectionSetting";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
+import { useRouter } from "expo-router";
 
 export default function SettingsScreen() {
   const { logout } = useContext(AuthContext);
+  const router = useRouter();
+  const navigateProfile = () => {
+    router.push("/(home)/(setting)/profile");
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -14,7 +19,7 @@ export default function SettingsScreen() {
       <SectionSetting
         title="Tài khoản"
         items={[
-          { icon: "account-outline", label: "Thông tin tài khoản" },
+          { icon: "account-outline", label: "Thông tin tài khoản", onPress: navigateProfile },
           { icon: "shield-lock-outline", label: "Bảo mật" },
           { icon: "bell-outline", label: "Thông báo" },
           { icon: "lock-outline", label: "Quyền riêng tư" },

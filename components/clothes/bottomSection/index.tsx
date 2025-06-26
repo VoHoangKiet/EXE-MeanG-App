@@ -1,24 +1,38 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Alert } from "react-native";
 import SquareAddButton from "./SquareAddButton";
 import SquareItem from "./SquareItem";
 import { useItems } from "@/hooks/item/useItems";
 import Spin from "@/components/common/Spin";
 import { Item } from "@/types/item.type";
+import { useAddItem } from "@/hooks/item/useAddItem";
+import { useState } from "react";
+import OptionModalCustom, {
+  ImageSource,
+  ImageType,
+} from "@/components/setting/modal/OptionModalCustom";
+import * as ImagePicker from "expo-image-picker";
+import { Toast } from "@ant-design/react-native";
 
-const CATEGORIES = ['shirt', 'pants', 'shoes'] as const;
+const CATEGORIES = ["shirt", "pants", "shoes"] as const;
 
 type Props = {
   selectedItems: Record<string, Item | null>;
-  setSelectedItems: React.Dispatch<React.SetStateAction<Record<string, Item | null>>>;
+  setSelectedItems: React.Dispatch<
+    React.SetStateAction<Record<string, Item | null>>
+  >;
   onPickItem?: (item: Item) => void;
 };
 
-export default function BottomSection({ selectedItems, setSelectedItems, onPickItem }: Props) {
+export default function BottomSection({
+  selectedItems,
+  setSelectedItems,
+  onPickItem,
+}: Props) {
   const { data: items, isLoading } = useItems();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [addingCategory, setAddingCategory] = useState<string | null>(null);
 
-  if (isLoading) {
-    return <Spin/>;
-  }
+  const { mutate: addItem, isPending } = useAddItem();
 
   const groupedItems = items?.reduce((acc, item) => {
     if (!acc[item.category_enum]) {
@@ -33,35 +47,85 @@ export default function BottomSection({ selectedItems, setSelectedItems, onPickI
     const currentSelected = selectedItems[category];
     const isSelected = currentSelected?._id === item._id;
     if (isSelected) {
-      setSelectedItems(prev => ({
+      setSelectedItems((prev) => ({
         ...prev,
-        [category]: null
+        [category]: null,
       }));
     } else {
-      setSelectedItems(prev => ({
+      setSelectedItems((prev) => ({
         ...prev,
-        [category]: item
+        [category]: item,
       }));
     }
-  }
+  };
 
   const isItemSelected = (item: Item) => {
     const category = item.category_enum;
     return selectedItems[category]?._id === item._id;
+  };
+
+  const handleModalConfirm = async (value: ImageType | ImageSource) => {
+    setModalVisible(false);
+    let result;
+    if (value === "camera") {
+      result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.7,
+      });
+    } else if (value === "library") {
+      result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.7,
+      });
+    } else {
+      return;
+    }
+    if (!result.canceled && result.assets?.length > 0) {
+      const formData = new FormData();
+      formData.append("name", "New Item");
+      formData.append("category_enum", addingCategory || "default");
+      formData.append("image", {
+        uri: result.assets[0].uri,
+        name: "item.jpg",
+        type: "image/jpeg",
+      } as any);
+      addItem(formData, {
+        onSuccess: () => {
+          setAddingCategory(null);
+          Toast.success("Thêm item thành công");
+        },
+        onError: (error) => {
+          console.log(error);
+          Toast.fail("Thêm item thất bại");
+        },
+      });
+    }
+  };
+
+  if (isLoading) {
+    return <Spin />;
   }
 
   return (
     <View style={styles.container}>
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.bottomSection}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
       >
         {CATEGORIES.map((category) => (
           <View key={category} style={styles.column}>
-            <SquareAddButton />
+            <SquareAddButton
+              onPress={() => {
+                setAddingCategory(category);
+                setModalVisible(true);
+              }}
+              loading={isPending && addingCategory === category}
+            />
             {groupedItems?.[category]?.map((item) => (
-              <SquareItem 
+              <SquareItem
                 key={item._id}
                 itemUrl={item.imageLink}
                 onPress={() => (onPickItem ? onPickItem(item) : pickItem(item))}
@@ -71,6 +135,14 @@ export default function BottomSection({ selectedItems, setSelectedItems, onPickI
           </View>
         ))}
       </ScrollView>
+
+      <OptionModalCustom
+        visible={modalVisible}
+        mode="imageSource"
+        onSelect={handleModalConfirm}
+        onCancel={() => setModalVisible(false)}
+        isUploading={isPending}
+      />
     </View>
   );
 }

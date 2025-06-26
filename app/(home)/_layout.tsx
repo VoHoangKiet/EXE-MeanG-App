@@ -1,18 +1,11 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Tabs } from "expo-router";
 import { Icon } from "@ant-design/react-native";
-import FavoritesScreen from "./favorites";
-import ChatScreen from "./chat";
-import CalendarScreen from "./calendar";
-import ProfileScreen from "./(setting)";
 import { Platform, Pressable } from "react-native";
-import ClothesScreen from ".";
-
-const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   return (
-    <Tab.Navigator
+    <Tabs
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
           switch (route.name) {
@@ -57,11 +50,11 @@ export default function BottomTabNavigator() {
         }),
       })}
     >
-      <Tab.Screen name="index" component={ClothesScreen} />
-      <Tab.Screen name="favorites" component={FavoritesScreen} />
-      <Tab.Screen name="calendar" component={CalendarScreen} />
-      <Tab.Screen name="chat" component={ChatScreen} />
-      <Tab.Screen name="setting" component={ProfileScreen} />
-    </Tab.Navigator>
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="favorites" />
+      <Tabs.Screen name="calendar" />
+      <Tabs.Screen name="chat" />
+      <Tabs.Screen name="(setting)" />
+    </Tabs>
   );
 }
