@@ -13,3 +13,8 @@ export const getOutfits = async (): Promise<ApiResponse<Outfit[]>> => {
   const response = await api.get("/outfit");
   return response.data;
 };
+
+export const favoriteOutfit = async (outfitId: string): Promise<ApiResponse<Outfit>> => {
+  const response = await api.post(`/outfit/${outfitId}/favorite`);
+  return response.data;
+};

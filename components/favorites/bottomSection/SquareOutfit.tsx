@@ -9,18 +9,16 @@ interface Props {
   itemUrl?: string;
   isSelected?: boolean;
   isFavorite?: boolean;
-  onToggleFavorite?: () => void;
 }
 
 const BORDER_WIDTH = 4;
 
-export default function SquareOutfit({ onPress, style, itemUrl, isSelected = false, isFavorite = false, onToggleFavorite }: Props) {
+export default function SquareOutfit({ onPress, style, itemUrl, isSelected = false, isFavorite = false }: Props) {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (isSelected) {
-      // Scale up animation when selected
       Animated.parallel([
         Animated.spring(scaleAnim, {
           toValue: 1.05,
@@ -64,16 +62,11 @@ export default function SquareOutfit({ onPress, style, itemUrl, isSelected = fal
       )}
       <TouchableOpacity onPress={onPress} style={styles.touchable} activeOpacity={0.8}>
         <Image source={{ uri: itemUrl }} style={styles.image} />
-        <TouchableOpacity
+        <View
           style={styles.heartIcon}
-          onPress={(e) => {
-            e.stopPropagation();
-            onToggleFavorite && onToggleFavorite();
-          }}
-          activeOpacity={0.7}
         >
           <AntDesign name={isFavorite ? 'heart' : 'hearto'} size={22} color={isFavorite ? '#e53935' : '#fff'} />
-        </TouchableOpacity>
+        </View>
         <Animated.View 
           style={[
             styles.selectedOverlay, 

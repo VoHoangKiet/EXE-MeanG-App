@@ -33,13 +33,6 @@ export default function BottomFavoritesSection({
     return outfit._id === selectedOutfit?._id;
   };
 
-  const handleToggleFavorite = (outfit: Outfit) => {
-    setFavoriteMap((prev) => ({
-      ...prev,
-      [outfit._id]: !prev[outfit._id],
-    }));
-  };
-
   return (
     <View style={styles.container}>
       <ScrollView
@@ -55,7 +48,6 @@ export default function BottomFavoritesSection({
                 onPress={() => pickOutfit(outfit)}
                 isSelected={isItemSelected(outfit)}
                 isFavorite={favoriteMap[outfit._id] ?? outfit.isFavorite}
-                onToggleFavorite={() => handleToggleFavorite(outfit)}
               />
             </View>
           ))}

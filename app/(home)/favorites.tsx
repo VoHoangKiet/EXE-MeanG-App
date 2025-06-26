@@ -5,19 +5,24 @@ import {
   Image,
   SafeAreaView,
   ImageBackground,
+  Alert,
 } from "react-native";
 import BoxItem from "@/components/clothes/BoxItem";
-import VerticalActionButtons from "@/components/clothes/button/ButtonAction";
 import { useItems } from "@/hooks/item/useItems";
 import { useOutfits } from "@/hooks/outfit/useOutfits";
 import Spin from "@/components/common/Spin";
 import { Outfit } from "@/types/outfit.type";
 import { Item } from "@/types/item.type";
 import BottomFavoritesSection from "@/components/favorites/bottomSection";
+import VerticalActionButtonsFavorites from "@/components/favorites/button/ButtonAction";
+import { handleDownloadImage } from "@/utils/handleDownloadImage";
+import { useFavorite } from "@/hooks/outfit/useFavorite";
 
 export default function FavoritesScreen() {
   const { data: outfits, isLoading: isOutfitsLoading } = useOutfits();
   const { data: items, isLoading: isItemsLoading } = useItems();
+  const { mutate: favoriteOutfit, isPending: isFavoritePending } = useFavorite();
+  const [loading, setLoading] = useState(false);
   const [outfitSelected, setOutfitSelected] = useState<Outfit | null>(null);
   const [selectedItems, setSelectedItems] = useState<any>({
     shirt: null,
@@ -36,6 +41,33 @@ export default function FavoritesScreen() {
       });
     }
   }, [outfits, outfitSelected]);
+
+  const handleDownload = () => {
+    if (outfitSelected) {
+      Alert.alert(
+        "Xác nhận tải ảnh",
+        "Bạn có muốn tải ảnh outfit này về máy?",
+        [
+          { text: "Huỷ", style: "cancel" },
+          {
+            text: "Tải ảnh",
+            onPress: () =>
+              handleDownloadImage(
+                outfitSelected.imageUrl,
+                outfitSelected.name,
+                setLoading
+              ),
+          },
+        ]
+      );
+    }
+  };
+
+  const handleFavorite = () => {
+    if (outfitSelected) {
+      favoriteOutfit(outfitSelected._id);
+    }
+  };
 
   if (isOutfitsLoading || isItemsLoading) {
     return <Spin />;
@@ -62,7 +94,12 @@ export default function FavoritesScreen() {
               <BoxItem item={selectedItems.shoes as Item} />
             </View>
             <View style={styles.boxContainerRight}>
-              <VerticalActionButtons />
+              <VerticalActionButtonsFavorites
+                onDownload={handleDownload}
+                loadingAction={loading ? "download" : null}
+                onFavorite={handleFavorite}
+                loadingActionFavorite={isFavoritePending ? "heart" : null}
+              />
             </View>
           </View>
 
