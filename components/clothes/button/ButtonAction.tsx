@@ -1,27 +1,24 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface Props {
   onBack?: () => void;
   onClear?: () => void;
   onSubmit?: () => void;
+  onFavorite?: () => void;
 }
 
-const VerticalActionButtons = ({ onBack, onClear, onSubmit }: Props) => {
+const VerticalActionButtons = ({ onBack, onClear, onSubmit, onFavorite }: Props) => {
   const actions = [
     {
       icon: <Feather name="zap" size={17} color="#5199a3" />,
       onPress: onSubmit,
     },
     {
-      icon: <Feather name="download" size={17} color="#5199a3" />,
-      onPress: () => {},
-    },
-    {
       icon: <AntDesign name="hearto" size={17} color="#5199a3" />,
-      onPress: () => {},
+      onPress: onFavorite,
     },
     {
       icon: <Feather name="rotate-ccw" size={17} color="#5199a3" />,

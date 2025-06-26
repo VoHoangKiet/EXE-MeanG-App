@@ -1,18 +1,19 @@
 import React from "react";
-import { View, StyleSheet, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground, StyleProp, ViewStyle } from "react-native";
 
 interface BackgroundProps {
   children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
 
-const Background: React.FC<BackgroundProps> = ({ children }) => {
+const Background: React.FC<BackgroundProps> = ({ children, style }) => {
   return (
     <ImageBackground
       source={require("../../assets/images/bg.png")}
       style={styles.background}
       resizeMode="cover"
     >
-      <View>{children}</View>
+      <View style={style}>{children}</View>
     </ImageBackground>
   );
 };

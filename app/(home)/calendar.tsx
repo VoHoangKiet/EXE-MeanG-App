@@ -13,6 +13,7 @@ import Spin from "@/components/common/Spin";
 import { useScheduleDates } from "@/hooks/schedule/useScheduleDates";
 import DayCell from "@/components/schedule/DayCell";
 import OutfitModal from "@/components/schedule/OutfitModal";
+import CreateScheduleModal from "@/components/schedule/CreateScheduleModal";
 
 export default function CalendarScreen() {
   const [current, setCurrent] = useState<string>(
@@ -22,7 +23,7 @@ export default function CalendarScreen() {
   const scheduleDates = useScheduleDates(schedules);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedSchedules, setSelectedSchedules] = useState<any[]>([]);
-
+  const [showCreateScheduleModal, setShowCreateScheduleModal] = useState(false);
   const handleDayPress = (day: DateData) => {
     setSelectedDate(day.dateString);
     if (Array.isArray(schedules)) {
@@ -44,11 +45,16 @@ export default function CalendarScreen() {
     setShowOutfitModal(true);
   };
 
+  const handleCreateSchedule = (data: any) => {
+    console.log(data);
+  };
+
   if (isLoading) {
     return <Spin />;
   }
 
   return (
+
     <Background>
       <View style={styles.container}>
         <Calendar
@@ -116,11 +122,6 @@ export default function CalendarScreen() {
             <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 8 }}>
               Lịch ngày {selectedDate}:
             </Text>
-            <TouchableOpacity onPress={() => setShowOutfitModal(true)}>
-              <Text style={{ color: "#232ded", fontWeight: "bold" }}>
-                Thêm lịch
-              </Text>
-            </TouchableOpacity>
           </View>
           {selectedSchedules.length === 0 ? (
             <Text style={{ color: "#000" }}>Không có lịch nào.</Text>
@@ -158,13 +159,20 @@ export default function CalendarScreen() {
         outfit={selectedOutfit}
         onClose={() => setShowOutfitModal(false)}
       />
+      <CreateScheduleModal
+        visible={showCreateScheduleModal}
+        onClose={() => setShowCreateScheduleModal(false)}
+        onCreate={handleCreateSchedule}
+        startDate={selectedDate || new Date().toISOString().slice(0, 10)}
+        outfit={selectedOutfit}
+      />
     </Background>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    marginTop: 10,
     backgroundColor: "transparent",
   },
   arrow: {

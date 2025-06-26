@@ -7,3 +7,12 @@ export interface Schedule {
   user_id: string;
   outfit_id: any;
 }
+
+export interface CreateSchedule {
+  start_time: Date;
+  end_time: Date;
+  outfit: string;
+  description: string;
+  location: string;
+  user: string;
+}

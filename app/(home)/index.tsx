@@ -8,6 +8,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Modal,
+  Linking,
 } from "react-native";
 import { useProfile } from "@/hooks/profile/useProfile";
 import Spin from "@/components/common/Spin";
@@ -17,10 +18,16 @@ import BottomSection from "@/components/clothes/bottomSection";
 import { Item } from "@/types/item.type";
 import { useCreateOutfit } from "@/hooks/outfit/useCreateOutfit";
 import { Outfit } from "@/types/outfit.type";
+import { useFavorite } from "@/hooks/outfit/useFavorite";
+import { Toast } from "@ant-design/react-native";
+import { delay } from "@/utils/delay";
+import PaymentModal from "@/components/payment/PaymentModal";
+import { useCreatePayment } from "@/hooks/payment/usePayment";
 
 export default function ClothesScreen() {
   const { data: profile, isLoading } = useProfile();
   const { mutate: createOutfit, isPending } = useCreateOutfit();
+  const { mutate: favoriteOutfit } = useFavorite();
   const [selectedItems, setSelectedItems] = useState<
     Record<string, Item | null>
   >({
@@ -31,6 +38,7 @@ export default function ClothesScreen() {
   const [outfit, setOutfit] = useState<Outfit | null>(null);
   const [_history, setHistory] = useState<Record<string, Item | null>[]>([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const handlePickItem = (item: Item) => {
     const category = item.category_enum;
@@ -76,6 +84,11 @@ export default function ClothesScreen() {
         setOutfit(data.data);
         setHistory([]);
       },
+      onError: async (error: any) => {
+        Toast.fail(error.response.data.errors[0].errorMessage);
+        await delay(1000);
+        setShowPaymentModal(true);
+      },
       onSettled: () => {
         setShowConfirmModal(false);
       },
@@ -86,7 +99,47 @@ export default function ClothesScreen() {
     setShowConfirmModal(false);
   };
 
+  const handleFavorite = () => {
+    if (outfit) {
+      favoriteOutfit(outfit._id, {
+        onSuccess: () => {
+          Toast.success("Yêu thích thành công");
+        },
+      });
+    } else {
+      Toast.fail("Outfit chưa được tạo");
+    }
+  };
+
+  const { mutate: createPayment, isPending: isCreatingPayment } =
+    useCreatePayment();
+
+  const handleSelectPackage = (packageId: string) => {
+    let amount = 0;
+    switch (packageId) {
+      case "basic":
+        amount = 49000;
+        break;
+      case "premium":
+        amount = 99000;
+        break;
+      case "pro":
+        amount = 259000;
+        break;
+    }
+    createPayment(amount, {
+      onSuccess: (data) => {
+        console.log(data);
+        Linking.openURL(data.data);
+      },
+      onError: (error: any) => {
+        Toast.fail(error.response.data.errors[0].errorMessage);
+      },
+    });
+  };
+
   if (isLoading) return <Spin />;
+
   return (
     <ImageBackground
       source={require("../../assets/images/bg.png")}
@@ -110,6 +163,7 @@ export default function ClothesScreen() {
                 onBack={handleBack}
                 onClear={handleClear}
                 onSubmit={handleSubmit}
+                onFavorite={handleFavorite}
               />
             </View>
           </View>
@@ -150,6 +204,12 @@ export default function ClothesScreen() {
           </View>
         </Modal>
       </SafeAreaView>
+      <PaymentModal
+        visible={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        onSelectPackage={handleSelectPackage}
+        loading={isCreatingPayment}
+      />
     </ImageBackground>
   );
 }

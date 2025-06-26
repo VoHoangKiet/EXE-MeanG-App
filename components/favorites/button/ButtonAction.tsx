@@ -9,6 +9,7 @@ interface Props {
   loadingAction?: "download" | "heart" | null;
   onFavorite?: () => void;
   loadingActionFavorite?: "heart" | null;
+  onCalendar?: () => void;
 }
 
 const VerticalActionButtonsFavorites = ({
@@ -16,6 +17,7 @@ const VerticalActionButtonsFavorites = ({
   loadingAction,
   onFavorite,
   loadingActionFavorite,
+  onCalendar,
 }: Props) => {
   const actions = [
     {
@@ -27,6 +29,11 @@ const VerticalActionButtonsFavorites = ({
       key: "heart",
       icon: <AntDesign name="hearto" size={17} color="#5199a3" />,
       onPress: onFavorite,
+    },
+    {
+      key: "calendar",
+      icon: <Feather name="calendar" size={17} color="#5199a3" />,
+      onPress: onCalendar,
     },
   ];
   return (

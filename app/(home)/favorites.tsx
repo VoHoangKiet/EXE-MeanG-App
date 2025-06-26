@@ -17,11 +17,14 @@ import BottomFavoritesSection from "@/components/favorites/bottomSection";
 import VerticalActionButtonsFavorites from "@/components/favorites/button/ButtonAction";
 import { handleDownloadImage } from "@/utils/handleDownloadImage";
 import { useFavorite } from "@/hooks/outfit/useFavorite";
+import CreateScheduleModal from "@/components/schedule/CreateScheduleModal";
+import { useCreateOutfitSchedule } from "@/hooks/schedule/useCreateOutfitSchedule";
 
 export default function FavoritesScreen() {
   const { data: outfits, isLoading: isOutfitsLoading } = useOutfits();
   const { data: items, isLoading: isItemsLoading } = useItems();
-  const { mutate: favoriteOutfit, isPending: isFavoritePending } = useFavorite();
+  const { mutate: favoriteOutfit, isPending: isFavoritePending } =
+    useFavorite();
   const [loading, setLoading] = useState(false);
   const [outfitSelected, setOutfitSelected] = useState<Outfit | null>(null);
   const [selectedItems, setSelectedItems] = useState<any>({
@@ -29,6 +32,10 @@ export default function FavoritesScreen() {
     pants: null,
     shoes: null,
   });
+  const [showCreateScheduleModal, setShowCreateScheduleModal] = useState(false);
+  const { mutate: createSchedule, isPending: isCreatingSchedule } =
+    useCreateOutfitSchedule();
+
   useEffect(() => {
     if (outfits && outfitSelected) {
       const filteredItems = outfitSelected.items.map((item) =>
@@ -69,6 +76,14 @@ export default function FavoritesScreen() {
     }
   };
 
+  const handleCreateSchedule = (data: any) => {
+    createSchedule(data, {
+      onSettled: () => {
+        setShowCreateScheduleModal(false);
+      },
+    });
+  };
+
   if (isOutfitsLoading || isItemsLoading) {
     return <Spin />;
   }
@@ -99,6 +114,7 @@ export default function FavoritesScreen() {
                 loadingAction={loading ? "download" : null}
                 onFavorite={handleFavorite}
                 loadingActionFavorite={isFavoritePending ? "heart" : null}
+                onCalendar={() => setShowCreateScheduleModal(true)}
               />
             </View>
           </View>
@@ -109,6 +125,13 @@ export default function FavoritesScreen() {
           />
         </View>
       </SafeAreaView>
+      <CreateScheduleModal
+        visible={showCreateScheduleModal}
+        onClose={() => setShowCreateScheduleModal(false)}
+        onCreate={handleCreateSchedule}
+        outfit={outfitSelected as Outfit & { user: string }}
+        loading={isCreatingSchedule}
+      />
     </ImageBackground>
   );
 }

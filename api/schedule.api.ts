@@ -6,3 +6,8 @@ export const getSchedule = async (): Promise<ApiResponse<Schedule[]>> => {
   const response = await api.get("/schedule");
   return response.data;
 };
+
+export const createOutfitSchedule = async (data: any): Promise<ApiResponse<Schedule>> => {
+  const response = await api.post("/schedule", data);
+  return response.data;
+};
