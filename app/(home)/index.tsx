@@ -129,7 +129,6 @@ export default function ClothesScreen() {
     }
     createPayment(amount, {
       onSuccess: (data) => {
-        console.log(data);
         Linking.openURL(data.data);
       },
       onError: (error: any) => {

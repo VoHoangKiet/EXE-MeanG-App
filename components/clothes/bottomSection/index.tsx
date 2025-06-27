@@ -85,7 +85,7 @@ export default function BottomSection({
     if (!result.canceled && result.assets?.length > 0) {
       const formData = new FormData();
       formData.append("name", "New Item");
-      formData.append("category_enum", addingCategory || "default");
+      formData.append("categoryEnum", addingCategory || "default");
       formData.append("image", {
         uri: result.assets[0].uri,
         name: "item.jpg",
@@ -96,8 +96,7 @@ export default function BottomSection({
           setAddingCategory(null);
           Toast.success("Thêm item thành công");
         },
-        onError: (error) => {
-          console.log(error);
+        onError: () => {
           Toast.fail("Thêm item thất bại");
         },
       });
